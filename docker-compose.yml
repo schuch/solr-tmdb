@@ -1,0 +1,21 @@
+version: '3'
+services:
+  solr:
+    image: solr:7.4
+    ports:
+    - "8983:8983"
+    volumes:
+    - solrhome:/opt/solr/server/solr/mycores
+    environment:
+    - SOLR_CORE_CONF_DIR=/opt/solr/server/solr/mycores
+    - SOLR_JAVA_MEM=-Xms1g -Xmx1g
+
+  nlp:
+    build: .
+    command: ["python", "solr-tmdb/indexTmdb.py"]
+    network_mode: "host"
+    volumes:
+      - solrhome:/code/solr-tmdb/solr_home
+
+volumes:
+  solrhome:
