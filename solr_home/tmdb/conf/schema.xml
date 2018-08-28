@@ -128,6 +128,21 @@
     <field name="vote_average" docValues="false" type="float" indexed="true" stored="true" multiValued="false" />
     <field name="vote_count" type="int" indexed="true" stored="true" multiValued="true"/>
 
+    <fieldType name="text_opennlp" class="solr.TextField" positionIncrementGap="100" multiValued="true" >
+      <analyzer>
+        <tokenizer class="solr.OpenNLPTokenizerFactory"
+                   sentenceModel="en-sent.bin"
+                   tokenizerModel="en-token.bin"/>
+        <filter class="solr.OpenNLPPOSFilterFactory" posTaggerModel="en-pos-maxent.bin"/>
+        <filter class="solr.OpenNLPChunkerFilterFactory" chunkerModel="en-chunker.bin"/>
+        <filter class="solr.TypeAsPayloadFilterFactory"/> 
+      </analyzer>
+    </fieldType>
+    <field type="text_opennlp" name="title_opennlp" multiValued="true" />
+    <field type="text_opennlp" name="overview_opennlp" multiValued="true" />
+	
+    <copyfield source="title" dest="title_opennlp" />
+    <copyfield source="overview" dest="overview_opennlp" />
 
 
     <!-- an "all" field from our fields -->
